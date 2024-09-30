@@ -7,12 +7,9 @@ class NoteSearch extends React.Component {
         this.state = {
             keyword: '',
         }
-
-        // BINDING
-        this.onKeywordChangeEventHandler = this.onKeywordChangeEventHandler.bind(this);
     }
 
-    onKeywordChangeEventHandler(event) {
+    onKeywordChangeEventHandler = (event) => {
         this.setState({
             keyword: event.target.value,
         });

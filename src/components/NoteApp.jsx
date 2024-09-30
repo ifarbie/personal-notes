@@ -11,21 +11,14 @@ class NoteApp extends React.Component {
             notes: getInitialData(),
             searchKeyword: '',
         };
-
-        // BINDING
-        this.onDeleteNoteHandler = this.onDeleteNoteHandler.bind(this);
-        this.onArchiveNoteHandler = this.onArchiveNoteHandler.bind(this);
-        this.onUnarchiveNoteHandler = this.onUnarchiveNoteHandler.bind(this);
-        this.onAddNoteHandler = this.onAddNoteHandler.bind(this);
-        this.onSearchHandler = this.onSearchHandler.bind(this);
     }
 
-    onDeleteNoteHandler(id) {
+    onDeleteNoteHandler = (id) => {
         const notes = this.state.notes.filter((note) => note.id !== id);
         this.setState({ notes });
     }
 
-    onArchiveNoteHandler(id) {
+    onArchiveNoteHandler = (id) => {
         this.setState((prevState) => {
             const updatedNotes = prevState.notes.map((note) => {
                 if (note.id === id) {
@@ -38,7 +31,7 @@ class NoteApp extends React.Component {
         });
     }
 
-    onUnarchiveNoteHandler(id) {
+    onUnarchiveNoteHandler = (id) => {
         this.setState((prevState) => {
             const updatedNotes = prevState.notes.map((note) => {
                 if (note.id == id) {
@@ -51,7 +44,7 @@ class NoteApp extends React.Component {
         });
     }
 
-    onAddNoteHandler({ title, body }) {
+    onAddNoteHandler = ({ title, body }) => {
         this.setState((prevState) => {
             return {
                 notes: [
@@ -68,7 +61,7 @@ class NoteApp extends React.Component {
         });
     }
 
-    onSearchHandler({ keyword }) {
+    onSearchHandler = ({ keyword }) => {
         this.setState({
             searchKeyword: keyword,
         })
