@@ -25,20 +25,86 @@ input::placeholder, textarea::placeholder {
   font-weight: bold;
 }
 
-.note-app__header {
+.homepage__action, .detail-page__action {
+  position: fixed;
+  display: flex;
+  gap: 16px;
+  bottom: 32px;
+  right: 32px;
+}
+
+.action {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4px 16px;
+  font-size: 1.6rem;
+  border: 0;
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+  background-color: white;
+  color: black;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.detail-page {
+  margin: 0 auto;
+  margin-top: 32px; 
+  width: 90%;
+}
+
+.detail-page__title {
+  font-size: 48px;
+  margin-bottom: 8px;
+  word-wrap: break-word;
+}
+
+.detail-page__createdAt {
+  color: #c7c7c7;
+}
+
+.detail-page__body {
+  line-height: 1.5;
+  margin-top: 36px;
+  font-size: 18px;
+}
+
+.detail-page__404-not-found-title {
+  text-align: center;
+  font-size: 2rem;
+  color: #aaa;
+  margin-bottom: -2rem;
+  margin-top: 2rem;
+}
+
+.detail-page__empty-message{
+  text-align: center;
+  color: #aaa;
+  margin-top: 48px;
+  font-size: 1.3rem;
+}
+
+.note-app__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 1.5rem;
   border-bottom: 1px solid #aaa;
 }
 
-.note-app__header h1 {
-  margin: 8px 0;
-  flex: 1;
+.note-app__header-title {
+  font-size: 2rem;
+  font-weight: 600;
   color: white;
+  text-decoration: none;
 }
 
+.note-app__header-archive-link {
+  color: white;
+  text-decoration: none;
+  font-size: 1.3rem;
+}
 
 .note-app__body {
   max-width: 1000px;
@@ -48,7 +114,11 @@ input::placeholder, textarea::placeholder {
 
 .note-app__body h2 {
   font-weight: normal;
-  margin: 16px 0;
+  margin-top: 5px;
+}
+
+.note-search > input {
+  margin-bottom: 3rem;
 }
 
 .note-input {
@@ -113,6 +183,8 @@ input::placeholder, textarea::placeholder {
 .note-item__content {
   padding: 12px;
   flex: 1;
+  text-decoration: none;
+  color: inherit;
 }
 
 .note-item__title {
@@ -165,9 +237,19 @@ input::placeholder, textarea::placeholder {
   color: #b00020;
 }
 
+.link {
+  text-decoration: none;
+  color: inherit
+}
+
+
 @media only screen and (min-width: 500px) {
   .notes-list {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .detail-page__title { 
+    font-size: 64px;
   }
 }
 
