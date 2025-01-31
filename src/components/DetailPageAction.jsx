@@ -7,13 +7,13 @@ import { IoTrashBin } from 'react-icons/io5';
 function DetailPageAction({ isArchived, id, onArchiveNote, onDeleteNote, onUnarchiveNote }) {
   const navigate = useNavigate();
 
-  const handleAction = (actionType) => {
+  const handleAction = async (actionType) => {
     if (actionType === 'archive') {
-      onArchiveNote(id);
+      await onArchiveNote(id);
     } else if (actionType === 'unarchive') {
-      onUnarchiveNote(id);
+      await onUnarchiveNote(id);
     } else if (actionType === 'delete') {
-      onDeleteNote(id);
+      await onDeleteNote(id);
     } else {
       throw Error('Invalid action type');
     }

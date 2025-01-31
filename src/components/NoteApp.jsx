@@ -1,100 +1,150 @@
 import React from 'react';
 import NoteAppHeader from './NoteAppHeader';
-import { getInitialData, createDate } from '../utils';
 import { Route, Routes } from 'react-router-dom';
 import HomePage from '../pages/HomePage';
 import ArchivePage from '../pages/ArchivePage';
 import AddPage from '../pages/AddPage';
 import DetailPage from '../pages/DetailPage';
 import NotFoundPage from '../pages/NotFoundPage';
+import LoginPage from '../pages/LoginPage';
+import RegisterPage from '../pages/RegisterPage';
+import { addNote, archiveNote, deleteNote, getUserLogged, putAccessToken, unarchiveNote } from '../utils/network-data';
+import { ThemeProvider } from '../contexts/ThemeContext';
 
 class NoteApp extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      notes: getInitialData(),
+      authedUser: null,
+      initializing: true,
+      localeContext: {
+        locale: localStorage.getItem('locale') || 'id',
+        toggleLocale: () => {
+          this.setState((prevState) => {
+            const newLocale = prevState.localeContext.locale === 'id' ? 'en' : 'id';
+            localStorage.setItem('locale', newLocale);
+
+            return {
+              localeContext: {
+                ...prevState.localeContext,
+                locale: newLocale,
+              },
+            };
+          });
+        },
+      },
+      themeContext: {
+        theme: localStorage.getItem('theme') || 'dark',
+        toggleTheme: () => {
+          this.setState((prevState) => {
+            const newTheme = prevState.themeContext.theme === 'dark' ? 'light' : 'dark';
+            localStorage.setItem('theme', newTheme);
+
+            return {
+              themeContext: {
+                ...prevState.themeContext,
+                theme: newTheme,
+              },
+            };
+          });
+        },
+      },
     };
   }
 
-  onDeleteNoteHandler = (id) => {
-    this.setState((prevState) => {
+  async componentDidMount() {
+    const { data } = await getUserLogged();
+
+    this.setState(() => {
       return {
-        notes: prevState.notes.filter((note) => note.id !== id),
+        authedUser: data,
+        initializing: false,
+      };
+    });
+  }
+
+  componentDidUpdate(_, prevState) {
+    if (prevState.theme !== this.state.themeContext.theme) {
+      document.documentElement.setAttribute('data-theme', this.state.themeContext.theme);
+    }
+  }
+
+  onDeleteNoteHandler = async (id) => {
+    return await deleteNote(id);
+  };
+
+  onArchiveNoteHandler = async (id) => {
+    return await archiveNote(id);
+  };
+
+  onUnarchiveNoteHandler = async (id) => {
+    return await unarchiveNote(id);
+  };
+
+  onAddNoteHandler = async ({ title, body }) => {
+    const { error } = await addNote({ title, body });
+
+    if (error) {
+      return alert('Gagal menambahkan catatan');
+    }
+  };
+
+  onLogin = async ({ accessToken }) => {
+    putAccessToken(accessToken);
+    const { data } = await getUserLogged();
+
+    this.setState(() => {
+      return {
+        authedUser: data,
       };
     });
   };
 
-  onArchiveNoteHandler = (id) => {
-    this.setState((prevState) => {
-      const updatedNotes = prevState.notes.map((note) => {
-        if (note.id === id) {
-          return { ...note, archived: true };
-        } else {
-          return note;
-        }
-      });
-      return { notes: updatedNotes };
-    });
-  };
-
-  onUnarchiveNoteHandler = (id) => {
-    this.setState((prevState) => {
-      const updatedNotes = prevState.notes.map((note) => {
-        if (note.id == id) {
-          return { ...note, archived: false };
-        } else {
-          return note;
-        }
-      });
-      return { notes: updatedNotes };
-    });
-  };
-
-  onAddNoteHandler = ({ title, body }) => {
-    this.setState((prevState) => {
+  onLogout = () => {
+    this.setState(() => {
       return {
-        notes: [
-          ...prevState.notes,
-          {
-            title,
-            body,
-            id: `notes-${+new Date()}`,
-            archived: false,
-            createdAt: createDate(),
-          },
-        ],
+        authedUser: null,
       };
     });
+    putAccessToken('');
   };
 
   render() {
-    const activeNotes = this.state.notes.filter((note) => !note.archived);
-    const archivedNotes = this.state.notes.filter((note) => note.archived);
+    if (this.state.initializing) return null;
+
+    if (this.state.authedUser === null) {
+      return (
+        <ThemeProvider value={this.state.themeContext}>
+          <NoteAppHeader />
+          <Routes>
+            <Route
+              path='*'
+              element={<LoginPage onLogin={this.onLogin} />}
+            />
+            <Route
+              path='/register'
+              element={<RegisterPage />}
+            />
+          </Routes>
+        </ThemeProvider>
+      );
+    }
 
     return (
-      <>
-        <NoteAppHeader />
+      <ThemeProvider value={this.state.themeContext}>
+        <NoteAppHeader
+          name={this.state.authedUser.name}
+          onLogout={this.onLogout}
+        />
         <Routes>
           <Route
             path='/'
-            element={
-              <HomePage
-                activeNotes={activeNotes}
-                onDeleteNote={this.onDeleteNoteHandler}
-                onArchiveNote={this.onArchiveNoteHandler}
-              />
-            }
+            element={<HomePage />}
           />
           <Route
             path='/archives'
-            element={
-              <ArchivePage
-                archivedNotes={archivedNotes}
-                onDeleteNote={this.onDeleteNoteHandler}
-                onArchiveNote={this.onUnarchiveNoteHandler}
-              />
-            }
+            element={<ArchivePage />}
           />
           <Route
             path='/notes/new'
@@ -104,7 +154,6 @@ class NoteApp extends React.Component {
             path='/notes/:id'
             element={
               <DetailPage
-                notes={this.state.notes}
                 onArchiveNote={this.onArchiveNoteHandler}
                 onDeleteNote={this.onDeleteNoteHandler}
                 onUnarchiveNote={this.onUnarchiveNoteHandler}
@@ -116,7 +165,7 @@ class NoteApp extends React.Component {
             element={<NotFoundPage />}
           />
         </Routes>
-      </>
+      </ThemeProvider>
     );
   }
 }

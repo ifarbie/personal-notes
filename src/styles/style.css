@@ -1,31 +1,69 @@
+:root {
+  --primary: #bb86fc;
+  --primary-variant: #3700b3;
+  --secondary: #03dac6;
+  --background: #202124;
+  --surface: #121212;
+  --error: #cf6679;
+  --warning: #f39c12;
+  --on-background: #ffffff;
+  --on-background-grey: #c7c7c7;
+  --on-surface: #ffffff;
+  --delete-button: #ff5f52;
+  --archive-button: #fff263;
+}
+
+[data-theme='light'] {
+  --background: #dddddd;
+  --suface: #ffffff;
+  --on-background: #333333;
+  --on-background-grey: #6d6d6d;
+  --on-surface: #333333;
+  --delete-button: #a03529;
+  --archive-button: #b6ab2f;
+}
+
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
 
-body {
-  font-family: 'Inter', sans-serif;
-  background-color: #202124;
-  color: white;
+button {
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  padding: 0;
+  cursor: pointer;
+  border: none;
+  color: inherit;
 }
 
-input, textarea {
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--background);
+  color: var(--on-background);
+}
+
+input,
+textarea {
   padding: 12px;
   margin: 12px 0;
   font-family: 'Inter', sans-serif;
   background-color: transparent;
-  color: white;
+  color: var(--on-background);
   border: 1px solid #aaa;
   border-radius: 4px;
 }
 
-input::placeholder, textarea::placeholder {
+input::placeholder,
+textarea::placeholder {
   color: #aaa;
   font-weight: bold;
 }
 
-.homepage__action, .detail-page__action {
+.homepage__action,
+.detail-page__action {
   position: fixed;
   display: flex;
   gap: 16px;
@@ -42,15 +80,15 @@ input::placeholder, textarea::placeholder {
   width: 50px;
   height: 50px;
   border-radius: 50px;
-  background-color: white;
-  color: black;
+  background-color: var(--on-background);
+  color: var(--background);
   padding: 8px;
   cursor: pointer;
 }
 
 .detail-page {
   margin: 0 auto;
-  margin-top: 32px; 
+  margin-top: 32px;
   width: 90%;
 }
 
@@ -61,7 +99,7 @@ input::placeholder, textarea::placeholder {
 }
 
 .detail-page__createdAt {
-  color: #c7c7c7;
+  color: var(--on-background-grey);
 }
 
 .detail-page__body {
@@ -73,14 +111,14 @@ input::placeholder, textarea::placeholder {
 .detail-page__404-not-found-title {
   text-align: center;
   font-size: 2rem;
-  color: #aaa;
+  color: var(--on-background-grey);
   margin-bottom: -2rem;
   margin-top: 2rem;
 }
 
-.detail-page__empty-message{
+.detail-page__empty-message {
   text-align: center;
-  color: #aaa;
+  color: var(--on-background-grey);
   margin-top: 48px;
   font-size: 1.3rem;
 }
@@ -96,20 +134,39 @@ input::placeholder, textarea::placeholder {
 .note-app__header-title {
   font-size: 2rem;
   font-weight: 600;
-  color: white;
+  color: var(--on-background);
   text-decoration: none;
 }
 
-.note-app__header-archive-link {
-  color: white;
+.note-app__header-archive-link,
+.logout-link {
+  color: var(--on-background);
   text-decoration: none;
+  display: flex;
+  align-items: center;
   font-size: 1.3rem;
+}
+
+.logout-link {
+  gap: 3px;
+}
+
+.logout-icon,
+.logout-name {
+  display: flex;
+  align-items: center;
+}
+
+.logout-container {
+  display: flex;
+  align-items: center;
 }
 
 .note-app__body {
   max-width: 1000px;
   margin: 16px auto;
   padding: 12px;
+  padding-inline: 1.7rem;
 }
 
 .note-app__body h2 {
@@ -127,7 +184,8 @@ input::placeholder, textarea::placeholder {
   margin-bottom: 48px;
 }
 
-.note-input input, .note-input textarea {
+.note-input input,
+.note-input textarea {
   display: block;
   width: 100%;
 }
@@ -139,7 +197,7 @@ input::placeholder, textarea::placeholder {
 .note-input__title__char-limit {
   font-size: 14px;
   text-align: right;
-  color: #aaa;
+  color: var(--on-background-grey);
 }
 
 .note-input__body {
@@ -152,7 +210,7 @@ input::placeholder, textarea::placeholder {
   padding: 8px;
   background-color: transparent;
   font-family: 'Inter', sans-serif;
-  color: white;
+  color: var(--on-background);
   border: 1px solid #aaa;
   border-radius: 4px;
   font-weight: bold;
@@ -169,7 +227,7 @@ input::placeholder, textarea::placeholder {
 
 .notes-list__empty-message {
   text-align: center;
-  color: #aaa;
+  color: var(--on-background-grey);
 }
 
 .note-item {
@@ -197,7 +255,7 @@ input::placeholder, textarea::placeholder {
 .note-item__date {
   font-size: 12px;
   margin-bottom: 8px;
-  color: #aaa;
+  color: var(--on-background-grey);
 }
 
 .note-item__body {
@@ -208,7 +266,8 @@ input::placeholder, textarea::placeholder {
   display: flex;
 }
 
-.note-item__delete-button,.note-item__archive-button {
+.note-item__delete-button,
+.note-item__archive-button {
   display: block;
   width: 100%;
   background-color: transparent;
@@ -222,11 +281,11 @@ input::placeholder, textarea::placeholder {
 
 .note-item__delete-button {
   border-right: 1px solid #aaa;
-  color: #ff5f52;
+  color: var(--delete-button);
 }
 
 .note-item__archive-button {
-  color: #fff263;
+  color: var(--archive-button);
 }
 
 .note-item__archive-button:hover {
@@ -239,16 +298,80 @@ input::placeholder, textarea::placeholder {
 
 .link {
   text-decoration: none;
-  color: inherit
+  color: inherit;
 }
 
+.input-login,
+.input-register {
+  margin: 32px 0;
+}
+
+.input-login label,
+.input-register label {
+  font-size: 24px;
+  font-weight: lighter;
+}
+
+.input-login input,
+.input-register input {
+  font-size: 18px;
+  font-family: 'Inter', sans-serif;
+  margin-top: 8px;
+  margin-bottom: 16px;
+  display: block;
+  width: 100%;
+  padding: 8px;
+  background-color: transparent;
+  border-radius: 8px;
+  border: 3px solid var(--on-background);
+  color: var(--on-background);
+}
+
+.input-login button,
+.input-register button {
+  font-family: 'Inter', sans-serif;
+  font-weight: bold;
+  font-size: 24px;
+  width: 100%;
+  padding: 12px;
+  border: 0;
+  border-radius: 8px;
+  background-color: var(--on-background);
+  color: var(--background);
+  cursor: pointer;
+}
+
+.input-login > p,
+.input-register > p {
+  margin-top: 2.2rem;
+  font-size: 1.5rem;
+}
+
+.input-login > p > a,
+.input-register > p > a {
+  color: inherit;
+}
+
+.note-app__header-menu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.theme-button {
+  display: flex;
+  margin: auto;
+  font-size: 1.8rem;
+  margin-right: 1.5rem;
+}
 
 @media only screen and (min-width: 500px) {
   .notes-list {
     grid-template-columns: 1fr 1fr;
   }
 
-  .detail-page__title { 
+  .detail-page__title {
     font-size: 64px;
   }
 }
