@@ -10,6 +10,7 @@ import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
 import { addNote, archiveNote, deleteNote, getUserLogged, putAccessToken, unarchiveNote } from '../utils/network-data';
 import { ThemeProvider } from '../contexts/ThemeContext';
+import { LocaleProvider } from '../contexts/LocaleContext';
 
 class NoteApp extends React.Component {
   constructor(props) {
@@ -115,57 +116,61 @@ class NoteApp extends React.Component {
 
     if (this.state.authedUser === null) {
       return (
-        <ThemeProvider value={this.state.themeContext}>
-          <NoteAppHeader />
-          <Routes>
-            <Route
-              path='*'
-              element={<LoginPage onLogin={this.onLogin} />}
-            />
-            <Route
-              path='/register'
-              element={<RegisterPage />}
-            />
-          </Routes>
-        </ThemeProvider>
+        <LocaleProvider value={this.state.localeContext}>
+          <ThemeProvider value={this.state.themeContext}>
+            <NoteAppHeader />
+            <Routes>
+              <Route
+                path='*'
+                element={<LoginPage onLogin={this.onLogin} />}
+              />
+              <Route
+                path='/register'
+                element={<RegisterPage />}
+              />
+            </Routes>
+          </ThemeProvider>
+        </LocaleProvider>
       );
     }
 
     return (
-      <ThemeProvider value={this.state.themeContext}>
-        <NoteAppHeader
-          name={this.state.authedUser.name}
-          onLogout={this.onLogout}
-        />
-        <Routes>
-          <Route
-            path='/'
-            element={<HomePage />}
+      <LocaleProvider value={this.state.localeContext}>
+        <ThemeProvider value={this.state.themeContext}>
+          <NoteAppHeader
+            name={this.state.authedUser.name}
+            onLogout={this.onLogout}
           />
-          <Route
-            path='/archives'
-            element={<ArchivePage />}
-          />
-          <Route
-            path='/notes/new'
-            element={<AddPage onAddNote={this.onAddNoteHandler} />}
-          />
-          <Route
-            path='/notes/:id'
-            element={
-              <DetailPage
-                onArchiveNote={this.onArchiveNoteHandler}
-                onDeleteNote={this.onDeleteNoteHandler}
-                onUnarchiveNote={this.onUnarchiveNoteHandler}
-              />
-            }
-          />
-          <Route
-            path='*'
-            element={<NotFoundPage />}
-          />
-        </Routes>
-      </ThemeProvider>
+          <Routes>
+            <Route
+              path='/'
+              element={<HomePage />}
+            />
+            <Route
+              path='/archives'
+              element={<ArchivePage />}
+            />
+            <Route
+              path='/notes/new'
+              element={<AddPage onAddNote={this.onAddNoteHandler} />}
+            />
+            <Route
+              path='/notes/:id'
+              element={
+                <DetailPage
+                  onArchiveNote={this.onArchiveNoteHandler}
+                  onDeleteNote={this.onDeleteNoteHandler}
+                  onUnarchiveNote={this.onUnarchiveNoteHandler}
+                />
+              }
+            />
+            <Route
+              path='*'
+              element={<NotFoundPage />}
+            />
+          </Routes>
+        </ThemeProvider>
+      </LocaleProvider>
     );
   }
 }

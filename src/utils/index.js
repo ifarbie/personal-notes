@@ -1,4 +1,4 @@
-const getInitialData = () => ([
+const getInitialData = () => [
   {
     id: 'notes-1',
     title: 'Babel',
@@ -41,17 +41,17 @@ const getInitialData = () => ([
     createdAt: '2022-04-14T04:27:34.572Z',
     archived: false,
   },
-]);
+];
 
-const showFormattedDate = (date) => {
+const showFormattedDate = (date, locale = 'id') => {
   const options = {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric"
-  }
-  return new Date(date).toLocaleDateString("en-EN", options)
-}
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  };
+  return new Date(date).toLocaleDateString(locale, options);
+};
 
 const createDate = () => {
   // MENDAPATKAN TANGGAL SAAT INI
@@ -73,6 +73,6 @@ const createDate = () => {
   const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}Z`;
 
   return formattedDate;
-}
+};
 
 export { getInitialData, showFormattedDate, createDate };

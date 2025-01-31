@@ -1,5 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
+import localeData from '../utils/locale-data';
+import { LocaleConsumer } from '../contexts/LocaleContext';
 
 class NoteSearch extends React.Component {
   constructor(props) {
@@ -19,21 +21,25 @@ class NoteSearch extends React.Component {
 
   render() {
     return (
-      <section className='note-search'>
-        <input
-          type='text'
-          placeholder={this.props.placeholder || 'Search notes...'}
-          value={this.state.keyword}
-          onChange={this.onKeywordChangeEventHandler}
-        />
-      </section>
+      <LocaleConsumer>
+        {({locale}) => {
+          return <section className='note-search'>
+            <input
+              type='text'
+              placeholder={this.props.placeholder || localeData.activeNotesSearchPlaceholder[locale]}
+              value={this.state.keyword}
+              onChange={this.onKeywordChangeEventHandler}
+            />
+          </section>;
+        }}
+      </LocaleConsumer>
     );
   }
 }
 
 NoteSearch.propTypes = {
   onSearch: PropTypes.func.isRequired,
-  placeholder: PropTypes.string
-}
+  placeholder: PropTypes.string,
+};
 
 export default NoteSearch;

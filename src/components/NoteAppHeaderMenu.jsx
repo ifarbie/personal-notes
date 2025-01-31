@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import ThemeButton from './ThemeButton';
 import { CgLogOut } from 'react-icons/cg';
 import PropTypes from 'prop-types';
+import LocaleButton from './LocaleButton';
+import LocaleContext from '../contexts/LocaleContext';
+import localeData from '../utils/locale-data';
 
 function NoteAppHeaderMenu({ onLogout, name }) {
+  const { locale } = useContext(LocaleContext);
+
   return (
     <div className='note-app__header-menu'>
       <div>
@@ -12,10 +17,13 @@ function NoteAppHeaderMenu({ onLogout, name }) {
           to='/archives'
           className='note-app__header-archive-link'
         >
-          Archives
+          {localeData.archivesLink[locale]}
         </Link>
       </div>
-      <ThemeButton />
+      <div className='note-app__header-buttons'>
+        <LocaleButton />
+        <ThemeButton />
+      </div>
       <div className='logout-container'>
         <Link
           onClick={onLogout}

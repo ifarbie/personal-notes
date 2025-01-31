@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import InputField from './InputField';
 import useInput from '../hooks/useInput';
 import { register } from '../utils/network-data';
+import localeData from '../utils/locale-data';
+import LocaleContext from '../contexts/LocaleContext';
 
 function RegisterForm() {
   const [name, nameChangeHandler] = useInput();
   const [email, emailChangeHandler] = useInput();
   const [password, passwordChangeHandler] = useInput();
   const [confirmPassword, confirmPasswordChangeHandler] = useInput();
+  const {locale} = useContext(LocaleContext);
   const navigate = useNavigate();
 
   const onSubmitHandler = async (event) => {
@@ -34,7 +37,7 @@ function RegisterForm() {
       onSubmit={onSubmitHandler}
     >
       <InputField
-        label='Name'
+        label={localeData.formName[locale]}
         type='text'
         name='name'
         value={name}
@@ -55,15 +58,15 @@ function RegisterForm() {
         onChange={passwordChangeHandler}
       />
       <InputField
-        label='Confirm Password'
+        label={localeData.formConfirmPassword[locale]}
         type='password'
         name='confirm_password'
         value={confirmPassword}
         onChange={confirmPasswordChangeHandler}
       />
-      <button type='submit'>Register</button>
+      <button type='submit'>{localeData.registerButton[locale]}</button>
       <p>
-        Sudah punya akun? <Link to='/'>Login di sini</Link>
+        {localeData.accountLoginParagraph[locale]} <Link to='/'>{localeData.accountLoginLink[locale]}</Link>
       </p>
     </form>
   );

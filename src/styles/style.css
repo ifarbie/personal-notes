@@ -131,6 +131,13 @@ textarea::placeholder {
   border-bottom: 1px solid #aaa;
 }
 
+.note-app__header-buttons {
+  display: flex;
+  align-items: center;
+  margin-left: 1.5rem;
+  gap: 1rem;
+}
+
 .note-app__header-title {
   font-size: 2rem;
   font-weight: 600;
@@ -359,11 +366,16 @@ textarea::placeholder {
   gap: 1rem;
 }
 
-.theme-button {
+.theme-button, .locale-button {
   display: flex;
   margin: auto;
   font-size: 1.8rem;
   margin-right: 1.5rem;
+}
+
+.locale-button {
+  font-size: 1.7rem;
+  margin-right: 0;
 }
 
 @media only screen and (min-width: 500px) {

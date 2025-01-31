@@ -3,18 +3,22 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import useInput from '../hooks/useInput';
 import { login } from '../utils/network-data';
+import localeData from '../utils/locale-data';
+import LocaleContext from '../contexts/LocaleContext';
 
 function LoginForm({ onLogin }) {
   const [password, passwordChangeHandler] = useInput();
   const [email, emailChangeHandler] = useInput();
 
+  const { locale } = React.useContext(LocaleContext);
+
   const onSubmitHandler = async (event) => {
     event.preventDefault();
-    
+
     const { error, data } = await login({ email, password });
     if (!error) {
       onLogin(data);
-      alert('Login success!')
+      alert('Login success!');
     }
   };
 
@@ -41,16 +45,16 @@ function LoginForm({ onLogin }) {
         id='password'
         required
       />
-      <button type='submit'>Login</button>
+      <button type='submit'>{localeData.loginButton[locale]}</button>
       <p>
-        Belum punya akun? <Link to='/register'>Daftar di sini</Link>
+        {localeData.accountRegisterParagraph[locale]} <Link to='/register'>{localeData.accountRegisterLink[locale]}</Link>
       </p>
     </form>
   );
 }
 
 LoginForm.propTypes = {
-    onLogin: PropTypes.func.isRequired
+  onLogin: PropTypes.func.isRequired,
 };
 
 export default LoginForm;

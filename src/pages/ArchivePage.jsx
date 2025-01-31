@@ -2,6 +2,8 @@ import React from 'react';
 import NotesList from '../components/NotesList';
 import NoteSearch from '../components/NoteSearch';
 import { deleteNote, getArchivedNotes, unarchiveNote } from '../utils/network-data';
+import { LocaleConsumer } from '../contexts/LocaleContext';
+import localeData from '../utils/locale-data';
 
 class ArchivePage extends React.Component {
   constructor(props) {
@@ -50,33 +52,41 @@ class ArchivePage extends React.Component {
   render() {
     if (this.state.initializing || !this.state.notes) {
       return (
-        <main className='note-app__body'>
-          <h2>Archived Notes</h2>
-          <NoteSearch onSearch={this.onSearchHandler} />
-          <p>Loading archived notes...</p>
-        </main>
+        <LocaleConsumer>
+          {({ locale }) => (
+            <main className='note-app__body'>
+              <h2>{localeData.archiveNotes[locale]}</h2>
+              <NoteSearch onSearch={this.onSearchHandler} />
+              <p>{localeData.loadingNotes[locale]}</p>
+            </main>
+          )}
+        </LocaleConsumer>
       );
     }
 
     const filteredNotes = this.state.notes.filter((note) => note.title.toLowerCase().includes(this.state.searchKeyword.toLowerCase()));
 
     return (
-      <main className='note-app__body'>
-        <h2>Archived Notes</h2>
-        <NoteSearch
-          onSearch={this.onSearchHandler}
-          placeholder='Search archived notes...'
-        />
-        {filteredNotes.length ? (
-          <NotesList
-            notes={filteredNotes}
-            onDeleteNote={this.onDeleteNoteHandler}
-            onArchiveNote={this.onUnarchiveNoteHandler}
-          />
-        ) : (
-          <p className='notes-list__empty-message'>You haven&apos;t archived notes yet</p>
+      <LocaleConsumer>
+        {({ locale }) => (
+          <main className='note-app__body'>
+            <h2>{localeData.archiveNotes[locale]}</h2>
+            <NoteSearch
+              onSearch={this.onSearchHandler}
+              placeholder={localeData.archiveNotesSearchPlaceholder[locale]}
+            />
+            {filteredNotes.length ? (
+              <NotesList
+                notes={filteredNotes}
+                onDeleteNote={this.onDeleteNoteHandler}
+                onArchiveNote={this.onUnarchiveNoteHandler}
+              />
+            ) : (
+              <p className='notes-list__empty-message'>{localeData.noArchiveNotes[locale]}</p>
+            )}
+          </main>
         )}
-      </main>
+      </LocaleConsumer>
     );
   }
 }

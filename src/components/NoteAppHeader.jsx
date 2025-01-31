@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ThemeButton from './ThemeButton';
 import NoteAppHeaderTitle from './NoteAppHeaderTitle';
 import NoteAppHeaderMenu from './NoteAppHeaderMenu';
+import LocaleButton from './LocaleButton';
 
 function NoteAppHeader({ name, onLogout }) {
   const onLogoutHandler = (event) => {
@@ -13,8 +14,18 @@ function NoteAppHeader({ name, onLogout }) {
   return (
     <header className='note-app__header'>
       <NoteAppHeaderTitle />
-      {!name ? <ThemeButton /> : null}
-      {name ? <NoteAppHeaderMenu onLogout={onLogoutHandler} name={name} /> : null}
+      {!name ? (
+        <section className='note-app__header-buttons'>
+          <LocaleButton />
+          <ThemeButton />
+        </section>
+      ) : null}
+      {name ? (
+        <NoteAppHeaderMenu
+          onLogout={onLogoutHandler}
+          name={name}
+        />
+      ) : null}
     </header>
   );
 }

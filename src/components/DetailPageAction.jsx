@@ -3,9 +3,12 @@ import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { MdArchive, MdUnarchive } from 'react-icons/md';
 import { IoTrashBin } from 'react-icons/io5';
+import LocaleContext from '../contexts/LocaleContext';
+import localeData from '../utils/locale-data';
 
 function DetailPageAction({ isArchived, id, onArchiveNote, onDeleteNote, onUnarchiveNote }) {
   const navigate = useNavigate();
+  const { locale } = React.useContext(LocaleContext);
 
   const handleAction = async (actionType) => {
     if (actionType === 'archive') {
@@ -24,14 +27,14 @@ function DetailPageAction({ isArchived, id, onArchiveNote, onDeleteNote, onUnarc
     <div className='detail-page__action'>
       <button
         className='action'
-        title={isArchived ? 'Unarchive' : 'Archive'}
+        title={isArchived ? localeData.move[locale] : localeData.archive[locale]}
         onClick={() => handleAction(isArchived ? 'unarchive' : 'archive')}
       >
         {isArchived ? <MdUnarchive /> : <MdArchive />}
       </button>
       <button
         className='action'
-        title='Delete'
+        title={localeData.delete[locale]}
         onClick={() => handleAction('delete')}
       >
         <IoTrashBin />

@@ -1,20 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import LocaleContext from '../contexts/LocaleContext';
+import localeData from '../utils/locale-data';
 
 function NoteItemAction({ id, onDeleteNote, onArchiveNote, archived }) {
+  const { locale } = React.useContext(LocaleContext);
   return (
     <div className='note-item__action'>
       <button
         className='note-item__delete-button'
         onClick={() => onDeleteNote(id)}
       >
-        Delete
+        {localeData.delete[locale]}
       </button>
       <button
         className='note-item__archive-button'
         onClick={() => onArchiveNote(id)}
       >
-        {!archived ? 'Archive' : 'Move'}
+        {!archived ? localeData.archive[locale] : localeData.move[locale]}
       </button>
     </div>
   );

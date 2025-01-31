@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
+import localeData from '../utils/locale-data';
+import { LocaleConsumer } from '../contexts/LocaleContext';
 
 function FormNoteInputWrapper({ addNote }) {
   const navigate = useNavigate();
@@ -9,7 +11,12 @@ function FormNoteInputWrapper({ addNote }) {
     navigate('/');
   };
 
-  return <FormNoteInput navigateHandler={navigateHandler} addNote={addNote} />;
+  return (
+    <FormNoteInput
+      navigateHandler={navigateHandler}
+      addNote={addNote}
+    />
+  );
 }
 
 class FormNoteInput extends React.Component {
@@ -46,27 +53,33 @@ class FormNoteInput extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.onSubmitHandler}>
-        <p className='note-input__title__char-limit'>
-          Remaining characters: <span>{this.state.titleLengthLimit - this.state.title.length}</span>
-        </p>
-        <input
-          type='text'
-          className='note-input__title'
-          placeholder="Your note title's"
-          required
-          value={this.state.title}
-          onChange={this.onTitleChangeEventHandler}
-        />
-        <textarea
-          type='text'
-          className='note-input__body'
-          placeholder='Write your note here...'
-          value={this.state.body}
-          onChange={this.onBodyChangeEventHandler}
-        ></textarea>
-        <button type='submit'>Add</button>
-      </form>
+      <LocaleConsumer>
+        {({locale}) => {
+          return (
+            <form onSubmit={this.onSubmitHandler}>
+              <p className='note-input__title__char-limit'>
+                {localeData.addPageRemainingTitle[locale]} <span>{this.state.titleLengthLimit - this.state.title.length}</span>
+              </p>
+              <input
+                type='text'
+                className='note-input__title'
+                placeholder={localeData.addPageTitlePlaceholder[locale]}
+                required
+                value={this.state.title}
+                onChange={this.onTitleChangeEventHandler}
+              />
+              <textarea
+                type='text'
+                className='note-input__body'
+                placeholder={localeData.addPageBodyPlaceholder[locale]}
+                value={this.state.body}
+                onChange={this.onBodyChangeEventHandler}
+              ></textarea>
+              <button type='submit'>{localeData.add[locale]}</button>
+            </form>
+          );
+        }}
+      </LocaleConsumer>
     );
   }
 }

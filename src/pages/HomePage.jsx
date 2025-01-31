@@ -3,6 +3,8 @@ import NoteSearch from '../components/NoteSearch';
 import NotesList from '../components/NotesList';
 import HomePageAction from '../components/HomePageAction';
 import { archiveNote, deleteNote, getActiveNotes } from '../utils/network-data';
+import { LocaleConsumer } from '../contexts/LocaleContext';
+import localeData from '../utils/locale-data';
 
 class HomePage extends React.Component {
   constructor(props) {
@@ -51,32 +53,40 @@ class HomePage extends React.Component {
   render() {
     if (this.state.initializing || !this.state.notes) {
       return (
-        <main className='note-app__body'>
-          <h2>Active Notes</h2>
-          <NoteSearch onSearch={this.onSearchHandler} />
-          <p>Loading notes...</p>
-          <HomePageAction />
-        </main>
+        <LocaleConsumer>
+          {({ locale }) => (
+            <main className='note-app__body'>
+              <h2>{localeData.activeNotes[locale]}</h2>
+              <NoteSearch onSearch={this.onSearchHandler} />
+              <p>{localeData.loadingNotes[locale]}</p>
+              <HomePageAction />
+            </main>
+          )}
+        </LocaleConsumer>
       );
     }
 
     const filteredNotes = this.state.notes.filter((note) => note.title.toLowerCase().includes(this.state.searchKeyword.toLowerCase()));
-    
+
     return (
-      <main className='note-app__body'>
-        <h2>Active Notes</h2>
-        <NoteSearch onSearch={this.onSearchHandler} />
-        {filteredNotes.length ? (
-          <NotesList
-            notes={filteredNotes}
-            onDeleteNote={this.onDeleteNoteHandler}
-            onArchiveNote={this.onArchiveNoteHandler}
-          />
-        ) : (
-          <p className='notes-list__empty-message'>No active notes found</p>
+      <LocaleConsumer>
+        {({ locale }) => (
+          <main className='note-app__body'>
+            <h2>{localeData.activeNotes[locale]}</h2>
+            <NoteSearch onSearch={this.onSearchHandler} />
+            {filteredNotes.length ? (
+              <NotesList
+                notes={filteredNotes}
+                onDeleteNote={this.onDeleteNoteHandler}
+                onArchiveNote={this.onArchiveNoteHandler}
+              />
+            ) : (
+              <p className='notes-list__empty-message'>{localeData.noActiveNotes[locale]}</p>
+            )}
+            <HomePageAction />
+          </main>
         )}
-        <HomePageAction />
-      </main>
+      </LocaleConsumer>
     );
   }
 }
