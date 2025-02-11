@@ -20,7 +20,7 @@ class NoteApp extends React.Component {
       authedUser: null,
       initializing: true,
       localeContext: {
-        locale: localStorage.getItem('locale') || 'id',
+        locale: localStorage.getItem('locale') || 'en',
         toggleLocale: () => {
           this.setState((prevState) => {
             const newLocale = prevState.localeContext.locale === 'id' ? 'en' : 'id';
